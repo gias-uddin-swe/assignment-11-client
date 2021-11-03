@@ -1,0 +1,6 @@
+.about-section {
+  background-image: url("../../images/Banner&Background/background.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-blend-mode: overlay;
+}
