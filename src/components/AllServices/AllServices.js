@@ -5,11 +5,11 @@ import "./AllServices";
 const AllServices = () => {
   const [services, setServices] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:5000/services")
+    fetch("http://localhost:5000/allServices")
       .then((res) => res.json())
       .then((data) => setServices(data));
   }, []);
-  console.log(services);
+
   return (
     <div className="p-3">
       <h1>All Services</h1>

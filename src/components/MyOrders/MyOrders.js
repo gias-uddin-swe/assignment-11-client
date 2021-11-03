@@ -3,11 +3,27 @@ import React, { useEffect, useState } from "react";
 const MyOrders = () => {
   const email = sessionStorage.getItem("email");
   const [services, setServices] = useState([]);
+
+  const [control, setControl] = useState(false);
+
   useEffect(() => {
-    fetch(`http://localhost:5000/myBooking/${email}`)
+    fetch(`http://localhost:5000/myOrders/${email}`)
       .then((res) => res.json())
-      .then((result) => setServices(result));
-  }, [email]);
+      .then((data) => setServices(data));
+  }, [control]);
+
+  const handleDelete = (id) => {
+    fetch(`http://localhost:5000/delteOrder/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.deletedCount) {
+          setControl(!control);
+        }
+      });
+    console.log(id);
+  };
 
   return (
     <div>
@@ -27,7 +43,12 @@ const MyOrders = () => {
                 <p>{pd?.description}</p>
                 <h3 className="text-danger"> Cost :{pd?.price}$</h3>
 
-                <button className="btn btn-danger">Cancel</button>
+                <button
+                  onClick={() => handleDelete(pd?._id)}
+                  className="btn btn-danger"
+                >
+                  Cancel
+                </button>
               </div>
             </div>
           ))}

@@ -4,9 +4,17 @@ import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
 
 const Booking = () => {
-  const [service, setServices] = useState({});
   const { serviceId } = useParams();
+  const [service, setService] = useState({});
+
   const email = sessionStorage.getItem("email");
+  useEffect(() => {
+    fetch(`http://localhost:5000/singleProduct/${serviceId}`)
+      .then((res) => res.json())
+      .then((data) => setService(data));
+  }, []);
+
+  console.log(service);
   const {
     register,
     handleSubmit,
@@ -14,27 +22,17 @@ const Booking = () => {
     formState: { errors },
   } = useForm();
 
-  useEffect(() => {
-    fetch(`http://localhost:5000/details/${serviceId}`)
-      .then((res) => res.json())
-      .then((result) => setServices(result));
-  }, []);
-
   const onSubmit = (data) => {
     data.email = email;
     data.status = "pending";
 
-    fetch("http://localhost:5000/confirmBooking", {
+    fetch("http://localhost:5000/confirmOrder", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(data),
     })
       .then((res) => res.json())
-      .then((result) => {
-        if (result) {
-          alert("ok hoice");
-        }
-      });
+      .then((result) => console.log(result));
     console.log(data);
   };
 
